@@ -144,11 +144,9 @@ async function checkYoutubeVideoPlayable(url: string): Promise<boolean> {
   }
 }
 
-async function startServer() {
-  const app = express();
-  const PORT = 3000;
-
-  app.use(express.json());
+const PORT = 3000;
+export const app = express();
+app.use(express.json());
 
   // Direct video play redirection endpoint
   app.get("/api/play-video", async (req, res) => {
@@ -611,6 +609,7 @@ async function startServer() {
     }
   });
 
+async function startServer() {
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
@@ -631,4 +630,6 @@ async function startServer() {
   });
 }
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
